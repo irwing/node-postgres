@@ -6,39 +6,62 @@ const router = express.Router();
 const service = new UserService();
 
 // get all users
-router.get('/', (req, res) => {
-  const users = service.find();
+router.get('/', async (req, res) => {
+  const users = await service.find();
   res.json(users);
 });
 
 // find a user
-router.get('/:id', (req, res) => {
-  const { id } = req.params;
-  const user = service.findOne(id);
-  console.log(1, user);
-  res.json(user);
+router.get('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await service.findOne(id);
+    res.json(user);
+  } catch (error) {
+    res.status(404).json({
+      message: error.message
+    });
+  }
 });
 
 // create a user
-router.post('/', (req, res) => {
-  const request = req.body;
-  const result = service.create(request);
-  res.json(result);
+router.post('/', async (req, res) => {
+  try {
+    const request = req.body;
+    const result = await service.create(request);
+    res.json(result);
+  } catch (error) {
+    res.status(404).json({
+      message: error.message
+    });
+  }
 });
 
 // update a user
-router.patch('/:id', (req, res) => {
-  const { id } = req.params;
-  const request = req.body;
-  const result = service.update(id, request);
-  res.json(result);
+router.patch('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const request = req.body;
+    const result = await service.update(id, request);
+    res.json(result);
+  } catch (error) {
+    res.status(404).json({
+      message: error.message
+    });
+  }
 });
 
 // delete a user
-router.delete('/:id', (req, res) => {
-  const { id } = req.params;
-  const result = service.delete(id);
-  res.json(result);
+router.delete('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await service.delete(id);
+    res.json(result);
+  } catch (error) {
+    res.status(404).json({
+      message: error.message
+    });
+  }
 });
 
 

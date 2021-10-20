@@ -22,14 +22,14 @@ class UserService {
     }
   }
 
-  validateIfExist (id) {
+  async validateIfExist (id) {
     const index = this.users.findIndex(item => item.id === id);
     if (index === -1) {
       throw new Error('User not found');
     }
   }
 
-  validateIfNotExist (email) {
+  async validateIfNotExist (email) {
     const index = this.users.findIndex(item => item.email === email);
     if (index !== -1) {
       throw new Error('User exists');
@@ -38,11 +38,25 @@ class UserService {
     }
   }
 
-  create (request) {
+  async find () {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(this.users);
+      }, 5000)
+    });
+  }
+
+  async findOne (id) {
+    await this.validateIfExist(id);
+
+    return this.users.find(item => item.id === id);
+  }
+
+  async create (request) {
 
     const email = request.email;
 
-    this.validateIfNotExist (email)
+    await this.validateIfNotExist(email);
 
     const newUser = {
       id: faker.datatype.uuid(),
@@ -53,18 +67,8 @@ class UserService {
     return newUser;
   }
 
-  find () {
-    return this.users;
-  }
-
-  findOne (id) {
-    this.validateIfExist (id);
-
-    return this.users.find(item => item.id === id);
-  }
-
-  update (id, request) {
-    this.validateIfExist (id);
+  async update (id, request) {
+    await this.validateIfExist(id);
 
     const user = this.users[index];
     this.users[index] = {
@@ -76,8 +80,8 @@ class UserService {
     return this.users[index];
   }
 
-  delete (id) {
-    this.validateIfExist (id);
+  async delete (id) {
+    await this.validateIfExist(id);
 
     this.users.splice(index, 1);
 
