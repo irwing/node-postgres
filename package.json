@@ -4,7 +4,7 @@
   "description": "Development practices of a Node.js and postgresql API",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js",
+    "dev": "killall node; nodemon index.js",
     "start": "node index.js",
     "lint": "eslint"
   },
