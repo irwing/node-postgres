@@ -25,5 +25,8 @@
     "eslint-plugin-prettier": "^4.0.0",
     "nodemon": "^2.0.14",
     "prettier": "^2.4.1"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
   }
 }
