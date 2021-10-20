@@ -8,10 +8,10 @@ class UserService {
   }
 
   // TODO: *** delete this method when add real database
-  // generate faker data
   generate () {
     for(let index = 0; index < 10; index++){
       let user = {
+        id: faker.datatype.uuid(),
         email: faker.internet.email().toLowerCase(),
         firstName: faker.name.firstName(),
         lastName: faker.name.lastName(),
@@ -23,16 +23,17 @@ class UserService {
   }
 
   create (request) {
-    request.id = Math.floor(Math.random() * (9999999 - 1)) + 1;
+    request.id = faker.datatype.uuid();
+    this.users.push(request);
     return request;
   }
 
-  find () {
+  find (id) {
     return this.users;
   }
 
-  findone () {
-
+  findOne (id) {
+    return this.users.find(item => item.id === id);
   }
 
   update () {
