@@ -9,7 +9,7 @@ class UserService {
 
   // TODO: *** delete this method when add real database
   generate () {
-    for(let index = 0; index < 10; index++){
+    for(let index = 1; index < 10; index++){
       let user = {
         id: faker.datatype.uuid(),
         email: faker.internet.email().toLowerCase(),
@@ -27,11 +27,12 @@ class UserService {
       id: faker.datatype.uuid(),
       ...request
     }
+
     this.users.push(newUser);
     return newUser;
   }
 
-  find (id) {
+  find () {
     return this.users;
   }
 
@@ -39,12 +40,29 @@ class UserService {
     return this.users.find(item => item.id === id);
   }
 
-  update () {
+  update (id, user) {
+    const index = this.users.findIndex(item => item.id === id);
+    if (index === -1) {
+      throw new Error('User not found');
+    }
 
+    this.users[index] = {
+      id,
+      ...user
+    };
+
+    return this.users[index];
   }
 
-  delete () {
+  delete (id) {
+    const index = this.users.findIndex(item => item.id === id);
+    if (index === -1) {
+      throw new Error('User not found');
+    }
 
+    this.users.splice(index, 1);
+
+    return { id };
   }
 }
 

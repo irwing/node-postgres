@@ -15,6 +15,7 @@ router.get('/', (req, res) => {
 router.get('/:id', (req, res) => {
   const { id } = req.params;
   const user = service.findOne(id);
+  console.log(1, user);
   res.json(user);
 });
 
@@ -24,5 +25,21 @@ router.post('/', (req, res) => {
   const result = service.create(request);
   res.json(result);
 });
+
+// update a user
+router.patch('/:id', (req, res) => {
+  const { id } = req.params;
+  const request = req.body;
+  const result = service.update(id, request);
+  res.json(result);
+});
+
+// delete a user
+router.delete('/:id', (req, res) => {
+  const { id } = req.params;
+  const result = service.delete(id);
+  res.json(result);
+});
+
 
 module.exports = router;
