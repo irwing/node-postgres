@@ -1,0 +1,29 @@
+{
+  "name": "node_postgres",
+  "version": "1.0.0",
+  "description": "Development practices of a Node.js and postgresql API",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js",
+    "lint": "eslint"
+  },
+  "keywords": [
+    "api",
+    "rest",
+    "node",
+    "postgresql"
+  ],
+  "author": "Irwing Naranjo <khalisser@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/irwing/node_postgres.git"
+  },
+  "devDependencies": {
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "nodemon": "^2.0.14",
+    "prettier": "^2.4.1"
+  }
+}
