@@ -23,9 +23,12 @@ class UserService {
   }
 
   create (request) {
-    request.id = faker.datatype.uuid();
-    this.users.push(request);
-    return request;
+    const newUser = {
+      id: faker.datatype.uuid(),
+      ...request
+    }
+    this.users.push(newUser);
+    return newUser;
   }
 
   find (id) {
