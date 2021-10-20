@@ -40,15 +40,17 @@ class UserService {
     return this.users.find(item => item.id === id);
   }
 
-  update (id, user) {
+  update (id, request) {
     const index = this.users.findIndex(item => item.id === id);
     if (index === -1) {
       throw new Error('User not found');
     }
 
+    const user = this.users[index];
     this.users[index] = {
       id,
-      ...user
+      ...user,
+      ...request
     };
 
     return this.users[index];
