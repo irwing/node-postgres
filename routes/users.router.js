@@ -3,6 +3,7 @@ const faker = require('faker');
 
 const router = express.Router();
 
+// get data
 router.get('/', (req, res) => {
 
   const users = [];
@@ -22,6 +23,12 @@ router.get('/', (req, res) => {
   }
 
   res.json(users);
+});
+
+// save data
+router.post('/', (req, res) => {
+  const body = req.body;
+  res.json(body);
 });
 
 module.exports = router;
