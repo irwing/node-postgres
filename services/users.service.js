@@ -22,7 +22,28 @@ class UserService {
     }
   }
 
+  validateIfExist (id) {
+    const index = this.users.findIndex(item => item.id === id);
+    if (index === -1) {
+      throw new Error('User not found');
+    }
+  }
+
+  validateIfNotExist (email) {
+    const index = this.users.findIndex(item => item.email === email);
+    if (index !== -1) {
+      throw new Error('User exists');
+      console.log(1);
+      return false;
+    }
+  }
+
   create (request) {
+
+    const email = request.email;
+
+    this.validateIfNotExist (email)
+
     const newUser = {
       id: faker.datatype.uuid(),
       ...request
@@ -37,14 +58,13 @@ class UserService {
   }
 
   findOne (id) {
+    this.validateIfExist (id);
+
     return this.users.find(item => item.id === id);
   }
 
   update (id, request) {
-    const index = this.users.findIndex(item => item.id === id);
-    if (index === -1) {
-      throw new Error('User not found');
-    }
+    this.validateIfExist (id);
 
     const user = this.users[index];
     this.users[index] = {
@@ -57,10 +77,7 @@ class UserService {
   }
 
   delete (id) {
-    const index = this.users.findIndex(item => item.id === id);
-    if (index === -1) {
-      throw new Error('User not found');
-    }
+    this.validateIfExist (id);
 
     this.users.splice(index, 1);
 
