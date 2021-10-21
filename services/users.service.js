@@ -1,4 +1,5 @@
 const faker = require('faker');
+const boom = require('@hapi/boom');
 
 class UserService {
 
@@ -25,7 +26,7 @@ class UserService {
   async validateIfExist (id) {
     const index = this.users.findIndex(item => item.id === id);
     if (index === -1) {
-      throw new Error('User not found');
+      throw boom.notFound('User not found');
     }
   }
 
@@ -33,8 +34,6 @@ class UserService {
     const index = this.users.findIndex(item => item.email === email);
     if (index !== -1) {
       throw new Error('User exists');
-      console.log(1);
-      return false;
     }
   }
 
