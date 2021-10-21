@@ -39,10 +39,14 @@ class UserService {
   }
 
   async find () {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject, next) => {
       setTimeout(() => {
         resolve(this.users);
-      }, 5000)
+      }, 1000);
+    })
+    .then((result) => result.json())
+    .catch(() =>  {
+      throw new Error('Users not found');
     });
   }
 
