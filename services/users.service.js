@@ -25,9 +25,12 @@ class UserService {
 
   async validateIfExist (id) {
     const index = this.users.findIndex(item => item.id === id);
+    console.log(index);
     if (index === -1) {
       throw boom.notFound('User not found');
     }
+
+    return index;
   }
 
   async validateIfNotExist (email) {
@@ -35,6 +38,8 @@ class UserService {
     if (index !== -1) {
       throw new Error('User exists');
     }
+
+    return index;
   }
 
   async find () {
@@ -44,7 +49,7 @@ class UserService {
       }, 1000);
     })
     .then((result) => result)
-    .catch((err) =>  {
+    .catch(() =>  {
       throw new Error('Users not found');
     });
   }
@@ -71,7 +76,7 @@ class UserService {
   }
 
   async update (id, request) {
-    await this.validateIfExist(id);
+    let index = await this.validateIfExist(id);
 
     const user = this.users[index];
     this.users[index] = {
@@ -84,7 +89,7 @@ class UserService {
   }
 
   async delete (id) {
-    await this.validateIfExist(id);
+    let index = await this.validateIfExist(id);
 
     this.users.splice(index, 1);
 
