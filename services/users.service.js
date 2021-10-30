@@ -43,8 +43,8 @@ class UserService {
         resolve(this.users);
       }, 1000);
     })
-    .then((result) => result.json())
-    .catch(() =>  {
+    .then((result) => result)
+    .catch((err) =>  {
       throw new Error('Users not found');
     });
   }
