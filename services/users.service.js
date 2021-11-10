@@ -1,28 +1,10 @@
 const faker = require('faker');
 const boom = require('@hapi/boom');
-const sequelize = require('../libs/sequelize');
+const { models } = require('../libs/sequelize');
 
 class UserService {
 
-  constructor () {
-    this.users = [];
-    this.generate();
-  }
-
-  // TODO: *** delete this method when add real database
-  generate () {
-    for(let index = 1; index < 10; index++){
-      let user = {
-        id: faker.datatype.uuid(),
-        email: faker.internet.email().toLowerCase(),
-        firstName: faker.name.firstName(),
-        lastName: faker.name.lastName(),
-        photo: faker.image.avatar()
-      };
-
-      this.users.push(user);
-    }
-  }
+  constructor () {}
 
   async validateIfExist (id) {
     const index = this.users.findIndex(item => item.id === id);
@@ -43,8 +25,7 @@ class UserService {
   }
 
   async find () {
-    const sql = `SELECT * FROM public.users;`;
-    const [data] = await sequelize.query(sql);
+    const data = await models.User.findAll();
     return data;
   }
 
