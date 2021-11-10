@@ -1,14 +1,12 @@
 const faker = require('faker');
 const boom = require('@hapi/boom');
-const pool = require('../libs/postgres');
+const sequelize = require('../libs/sequelize');
 
 class UserService {
 
   constructor () {
     this.users = [];
-    this.generate ();
-    this.db = pool;
-    this.db.on('error', (error) => console.log(error));
+    this.generate();
   }
 
   // TODO: *** delete this method when add real database
@@ -45,9 +43,9 @@ class UserService {
   }
 
   async find () {
-    const sql = `SELECT * FROM public.users`;
-    const query = await this.db.query(sql);
-    return query.rows;
+    const sql = `SELECT * FROM public.users;`;
+    const [data] = await sequelize.query(sql);
+    return data;
   }
 
   async findOne (id) {
