@@ -1,11 +1,14 @@
 const faker = require('faker');
 const boom = require('@hapi/boom');
+const pool = require('../libs/postgres');
 
 class UserService {
 
   constructor () {
     this.users = [];
     this.generate ();
+    this.db = pool;
+    this.db.on('error', (error) => console.log(error));
   }
 
   // TODO: *** delete this method when add real database
@@ -42,15 +45,9 @@ class UserService {
   }
 
   async find () {
-    return new Promise((resolve, reject, next) => {
-      setTimeout(() => {
-        resolve(this.users);
-      }, 1000);
-    })
-    .then((result) => result)
-    .catch(() =>  {
-      throw boom.notFound('User not found');
-    });
+    const sql = `SELECT * FROM public.users`;
+    const query = await this.db.query(sql);
+    return query.rows;
   }
 
   async findOne (id) {
