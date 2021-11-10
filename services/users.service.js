@@ -25,7 +25,6 @@ class UserService {
 
   async validateIfExist (id) {
     const index = this.users.findIndex(item => item.id === id);
-    console.log(index);
     if (index === -1) {
       throw boom.notFound('User not found');
     }
@@ -36,7 +35,7 @@ class UserService {
   async validateIfNotExist (email) {
     const index = this.users.findIndex(item => item.email === email);
     if (index !== -1) {
-      throw new Error('User exists');
+      throw boom.badRequest('User exists');
     }
 
     return index;
@@ -50,7 +49,7 @@ class UserService {
     })
     .then((result) => result)
     .catch(() =>  {
-      throw new Error('Users not found');
+      throw boom.notFound('User not found');
     });
   }
 
