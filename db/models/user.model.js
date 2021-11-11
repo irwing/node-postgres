@@ -28,6 +28,12 @@ const UserSchema = {
   photo: {
     allowNull: true,
     type: DataTypes.TEXT
+  },
+  createdAt: {
+    allowNull: false,
+    type: DataTypes.DATE,
+    field: 'create_at',
+    defaultValue: Sequelize.NOW
   }
 };
 
