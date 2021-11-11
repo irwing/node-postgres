@@ -2,21 +2,21 @@ const faker = require('faker');
 const boom = require('@hapi/boom');
 const { models } = require('../libs/sequelize');
 
-class UserService {
+class ProfileService {
 
   constructor () {}
 
   async validateIfExist (id) {
-    const data = await models.User.findByPk(id);
+    const data = await models.Profile.findByPk(id);
     if (data === null) {
-      throw boom.notFound('User not found');
+      throw boom.notFound('Profile not found');
     }
 
     return data;
   }
 
   async find () {
-    const data = await models.User.findAll();
+    const data = await models.Profile.findAll();
 
     return data;
   }
@@ -24,7 +24,7 @@ class UserService {
   async findOne (id) {
     await this.validateIfExist(id);
 
-    const data = await models.User.findByPk(id);
+    const data = await models.Profile.findByPk(id);
 
     return data;
   }
@@ -35,26 +35,26 @@ class UserService {
       id: faker.datatype.uuid(),
       ...request
     }
-    const newUser = await models.User.create(data);
+    const newProfile = await models.Profile.create(data);
 
-    return newUser;
+    return newProfile;
   }
 
   async update (id, request) {
 
-    const user = await this.findOne(id);
-    const response = await user.update(request);
+    const profile = await this.findOne(id);
+    const response = await profile.update(request);
 
     return response;
   }
 
   async delete (id) {
 
-    let user = await this.findOne(id);
-    await user.destroy();
+    let profile = await this.findOne(id);
+    await profile.destroy();
 
     return { id };
   }
 }
 
-module.exports = UserService;
+module.exports = ProfileService;
