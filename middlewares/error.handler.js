@@ -9,6 +9,16 @@ function errorHandler(err, req, res, next) {
   });
 }
 
+function secuelizeErrorHandler(err, req, res, next) {
+  if (err) {
+    res.status(409).json({
+      'statusCode': 409,
+      'error': err.errors[0].type,
+      'message': err.errors[0].message
+    });
+  }
+}
+
 function boomErrorHandler(err, req, res, next) {
   if (err.isBoom) {
     const { output } = err;
@@ -17,4 +27,4 @@ function boomErrorHandler(err, req, res, next) {
   next(err);
 }
 
-module.exports = { logErrors, errorHandler, boomErrorHandler }
+module.exports = { logErrors, errorHandler, secuelizeErrorHandler, boomErrorHandler }

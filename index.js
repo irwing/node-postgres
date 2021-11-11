@@ -7,7 +7,7 @@ const boom = require('@hapi/boom');
 
 const routerApi = require('./routes');
 
-const { logErrors, errorHandler, boomErrorHandler } = require('./middlewares/error.handler');
+const { logErrors, errorHandler, secuelizeErrorHandler, boomErrorHandler } = require('./middlewares/error.handler');
 
 const app = express();
 const port = 3000;
@@ -42,6 +42,7 @@ routerApi(app);
 
 app.use(logErrors);
 app.use(boomErrorHandler);
+app.use(secuelizeErrorHandler);
 app.use(errorHandler);
 
 app.listen(port, () => {
