@@ -7,66 +7,65 @@ class UserService {
   constructor () {}
 
   async validateIfExist (id) {
-    const index = this.users.findIndex(item => item.id === id);
-    if (index === -1) {
+    const data = await models.User.findByPk(id);
+    if (data === null) {
       throw boom.notFound('User not found');
     }
 
-    return index;
+    return data;
   }
 
-  async validateIfNotExist (email) {
-    const index = this.users.findIndex(item => item.email === email);
-    if (index !== -1) {
-      throw boom.badRequest('User exists');
-    }
+  async validateIfNotExist (email, id = null) {
+    const data = await models.User.findOne({ where: { email: email } });
 
-    return index;
+    if (data !== null) {
+      throw boom.badRequest('The email is used');
+    }
   }
 
   async find () {
     const data = await models.User.findAll();
+
     return data;
   }
 
   async findOne (id) {
     await this.validateIfExist(id);
 
-    return this.users.find(item => item.id === id);
+    const data = await models.User.findByPk(id);
+
+    return data;
   }
 
   async create (request) {
-
     const email = request.email;
+    // await this.validateIfNotExist(email, null);
 
-    await this.validateIfNotExist(email);
-
-    const newUser = {
+    const data = {
       id: faker.datatype.uuid(),
       ...request
     }
+    const newUser = await models.User.create(data);
 
-    this.users.push(newUser);
     return newUser;
   }
 
   async update (id, request) {
-    let index = await this.validateIfExist(id);
 
-    const user = this.users[index];
-    this.users[index] = {
-      id,
-      ...user,
-      ...request
-    };
+    // validate unique email
+    const email = request.email;
+    // await this.validateIfNotExist(email, id);
 
-    return this.users[index];
+    const user = await this.findOne(id);
+    const response = await user.update(request);
+
+    return response;
   }
 
   async delete (id) {
-    let index = await this.validateIfExist(id);
 
-    this.users.splice(index, 1);
+    let user = await this.findOne(id);
+    await user.destroy();
 
     return { id };
   }
