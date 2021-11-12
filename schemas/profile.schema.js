@@ -18,6 +18,9 @@ const lastName = Joi
     "string.pattern.base": "Last Name accepts alphabetic characters, numbers and spaces"
   });
 const photo = Joi.string().uri();
+const userId = Joi.number().integer();
+const email = Joi.string().email();
+const password =  Joi.string();
 
 const getProfileSchema = Joi.object({
   id: id.required()
@@ -26,7 +29,11 @@ const getProfileSchema = Joi.object({
 const createProfileSchema = Joi.object({
   firstName: firstName.required(),
   lastName: lastName.required(),
-  photo: photo
+  photo: photo,
+  user: Joi.object({
+    email: email.required(),
+    password: password.required()
+  })
 });
 
 const updateProfileSchema = Joi.object({

@@ -19,10 +19,6 @@ const UserSchema = {
     allowNull: false,
     type: DataTypes.STRING
   },
-  photo: {
-    allowNull: true,
-    type: DataTypes.TEXT
-  },
   createdAt: {
     allowNull: false,
     type: DataTypes.DATE,

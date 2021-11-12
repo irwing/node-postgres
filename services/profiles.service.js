@@ -31,11 +31,17 @@ class ProfileService {
 
   async create (request) {
 
-    const data = {
-      id: faker.datatype.uuid(),
-      ...request
-    }
-    const newProfile = await models.Profile.create(data);
+    const id = faker.datatype.uuid();
+
+    const { user, ... profile } = request;
+    const dataUser = { user: { id, ...user } };
+    const dataProfile = { id, ...profile };
+
+    const data = { ...dataProfile, ...dataUser };
+
+    const newProfile = await models.Profile.create(data, {
+      include: ['user']
+    });
 
     return newProfile;
   }
