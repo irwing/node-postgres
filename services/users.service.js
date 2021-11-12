@@ -16,7 +16,9 @@ class UserService {
   }
 
   async find () {
-    const data = await models.User.findAll();
+    const data = await models.User.findAll({
+      include: ['profile']
+    });
 
     return data;
   }
@@ -24,7 +26,9 @@ class UserService {
   async findOne (id) {
     await this.validateIfExist(id);
 
-    const data = await models.User.findByPk(id);
+    const data = await models.User.findByPk(id, {
+      include: ['profile']
+    });
 
     return data;
   }
