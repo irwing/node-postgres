@@ -15,6 +15,10 @@ const UserSchema = {
     type: DataTypes.STRING,
     unique: true
   },
+  password: {
+    allowNull: false,
+    type: DataTypes.STRING
+  },
   photo: {
     allowNull: true,
     type: DataTypes.TEXT
