@@ -1,6 +1,7 @@
 const faker = require('faker');
 const boom = require('@hapi/boom');
 const { models } = require('../libs/sequelize');
+const { array } = require('joi');
 
 class CourseService {
 
@@ -17,7 +18,8 @@ class CourseService {
 
   async find () {
     const data = await models.Course.findAll({
-      include: ['skills']
+      attributes: ['id', 'name', 'description'],
+      include: [{ model: models.Skill, as: 'skills', attributes: ['id', 'name'] }]
     });
 
     return data;
@@ -27,7 +29,8 @@ class CourseService {
     await this.validateIfExist(id);
 
     const data = await models.Course.findByPk(id, {
-      include: ['skills']
+      attributes: ['id', 'name', 'description'],
+      include: [{ model: models.Skill, as: 'skills', attributes: ['id', 'name'] }]
     });
 
     return data;
@@ -37,12 +40,24 @@ class CourseService {
 
     const id = faker.datatype.uuid();
 
-    const { ... course } = request;
+    const { skills, ... course } = request;
+    
     const dataCourse = { id, ...course };
 
     const data = { ...dataCourse };
 
     const newCourse = await models.Course.create(data);
+
+    if (skills.length > 0) {
+      for (let index = 0; index < skills.length; index++) {
+        const skill = skills[index];
+        await models.Skill.create({
+          id: faker.datatype.uuid(),
+          name: skill.name,
+          courseId: newCourse.id
+        });
+      }
+    }
 
     return newCourse;
   }

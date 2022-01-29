@@ -24,12 +24,14 @@ const getCourseSchema = Joi.object({
 
 const createCourseSchema = Joi.object({
   name: name.required(),
-  description: description.required()
+  description: description.required(),
+  skills: Joi.array().items()
 });
 
 const updateCourseSchema = Joi.object({
   name: name,
-  description: description
+  description: description,
+  skills: Joi.array().items()
 });
 
 module.exports = { getCourseSchema, createCourseSchema, updateCourseSchema };
