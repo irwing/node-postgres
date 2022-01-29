@@ -21,7 +21,7 @@ const SkillSchema = {
     field: 'course_id',
     allowNull: false,
     type: DataTypes.UUID,
-    unique: true,
+    unique: false,
     references: {
       model: COURSE_TABLE,
       key: 'id'
