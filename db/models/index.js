@@ -11,6 +11,7 @@ function setupModels(sequelize) {
 
   User.associate(sequelize.models);
   Profile.associate(sequelize.models);
+  Course.associate(sequelize.models);
   Skill.associate(sequelize.models);
 }
 

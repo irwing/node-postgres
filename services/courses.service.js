@@ -16,7 +16,9 @@ class CourseService {
   }
 
   async find () {
-    const data = await models.Course.findAll();
+    const data = await models.Course.findAll({
+      include: ['skills']
+    });
 
     return data;
   }
@@ -24,7 +26,9 @@ class CourseService {
   async findOne (id) {
     await this.validateIfExist(id);
 
-    const data = await models.Course.findByPk(id);
+    const data = await models.Course.findByPk(id, {
+      include: ['skills']
+    });
 
     return data;
   }

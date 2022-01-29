@@ -33,6 +33,13 @@ const CourseSchema = {
 
 class Course extends Model {
 
+  static associate(models) {
+    this.hasMany(models.Skill, {
+      as: 'skills', 
+      foreignKey: 'courseId'
+    });
+  }
+
   static config(sequelize) {
     return {
       sequelize,
