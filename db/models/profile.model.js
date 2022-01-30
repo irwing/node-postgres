@@ -51,6 +51,10 @@ class Profile extends Model {
 
   static associate(models) {
     this.belongsTo(models.User, {as: 'user'});
+    this.hasMany(models.ProfileCourse, {
+      as: 'profiles_courses', 
+      foreignKey: 'profileId'
+    });
   }
 
   static config(sequelize) {

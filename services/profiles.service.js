@@ -27,7 +27,25 @@ class ProfileService {
     await this.validateIfExist(id);
 
     const data = await models.Profile.findByPk(id, {
-      include: ['user']
+      include: [
+        { 
+          model: models.User, 
+          as: 'user',
+          attributes: ['id', 'email']
+        },
+        { 
+          model: models.ProfileCourse, 
+          as: 'profiles_courses', 
+          attributes: ['id'],
+          include: [
+            { 
+              model: models.Course, 
+              as: 'course', 
+              attributes: ['name']
+            }
+          ]
+        }
+      ]
     });
 
     return data;
