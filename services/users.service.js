@@ -15,10 +15,17 @@ class UserService {
     return data;
   }
 
-  async find () {
-    const data = await models.User.findAll({
+  async find (optionsPagination) {
+    const options = {
       include: ['profile']
-    });
+    };
+    
+    if (optionsPagination.page && optionsPagination.limit) {
+      options.limit = optionsPagination.limit;
+      options.offset = optionsPagination.page - 1;
+    }
+
+    const data = await models.User.findAll(options);
 
     return data;
   }

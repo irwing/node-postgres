@@ -2,20 +2,30 @@ const express = require('express');
 
 const UserService = require('./../services/users.service');
 const validatorHandler = require('./../middlewares/validator.handler');
-const { getUserSchema, createUserSchema, updateUserSchema } = require('./../schemas/user.schema');
+const { getUserSchema, createUserSchema, updateUserSchema, queryUserSchema } = require('./../schemas/user.schema');
 
 const router = express.Router();
 const service = new UserService();
 
 // get all users
-router.get('/', async (req, res, next) => {
-  try {
-    const users = await service.find();
-    res.json(users);
-  } catch (error) {
-    next(error);
+router.get('/', 
+  validatorHandler(queryUserSchema, 'query'),
+  async (req, res, next) => {
+    try {
+
+      let { limit, page } = req.query;
+      let optionsPagination = {
+        limit: Number(limit) || 10,
+        page: Number(page) || 1
+      }
+
+      const users = await service.find(optionsPagination);
+      res.json(users);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 // find a user
 router.get('/:id',
@@ -48,7 +58,7 @@ router.post('/',
 // update a user
 router.patch('/:id',
   validatorHandler(getUserSchema, 'params'),
-  validatorHandler(createUserSchema, 'body'),
+  validatorHandler(updateUserSchema, 'body'),
     async (req, res, next) => {
     try {
       const { id } = req.params;
