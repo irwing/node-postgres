@@ -51,9 +51,11 @@ class Profile extends Model {
 
   static associate(models) {
     this.belongsTo(models.User, {as: 'user'});
-    this.hasMany(models.ProfileCourse, {
-      as: 'profiles_courses', 
-      foreignKey: 'profileId'
+    this.belongsToMany(models.Course, {
+      as: 'courses',
+      through: models.ProfileCourse,
+      foreignKey: 'profileId',
+      otherKey: 'courseId'
     });
   }
 

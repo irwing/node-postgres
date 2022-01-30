@@ -49,8 +49,7 @@ const ProfileCourseSchema = {
 class ProfileCourse extends Model {
 
   static associate(models) {
-    this.belongsTo(models.Profile, {as: 'profile'});
-    this.belongsTo(models.Course, {as: 'course'});
+    // 
   }
 
   static config(sequelize) {

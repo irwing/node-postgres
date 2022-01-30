@@ -34,16 +34,9 @@ class ProfileService {
           attributes: ['id', 'email']
         },
         { 
-          model: models.ProfileCourse, 
-          as: 'profiles_courses', 
-          attributes: ['id'],
-          include: [
-            { 
-              model: models.Course, 
-              as: 'course', 
-              attributes: ['name']
-            }
-          ]
+          model: models.Course, 
+          as: 'courses',
+          through: {attributes: []}
         }
       ]
     });
