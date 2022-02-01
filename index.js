@@ -8,6 +8,7 @@ const boom = require('@hapi/boom');
 const routerApi = require('./routes');
 
 const { logErrors, errorHandler, secuelizeErrorHandler, boomErrorHandler } = require('./middlewares/error.handler');
+const { checkApiKey } = require('./middlewares/auth.handler');
 
 const app = express();
 const port = 3000;
@@ -34,9 +35,12 @@ app.use(cors());
 // use middleware for receive data in json
 app.use(express.json());
 
-app.get('/', (req, res) => {
-  res.send('Hi!')
-})
+app.get('/', 
+  checkApiKey,
+  (req, res) => {
+    res.send('Hi!')
+  }
+);
 
 routerApi(app);
 
