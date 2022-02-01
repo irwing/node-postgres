@@ -1,5 +1,6 @@
 const faker = require('faker');
 const boom = require('@hapi/boom');
+const bcrypt = require('bcrypt');
 const { models } = require('../libs/sequelize');
 
 class ProfileService {
@@ -49,7 +50,12 @@ class ProfileService {
     const id = faker.datatype.uuid();
 
     const { user, ... profile } = request;
+    
+    // hashin password
+    user.password = await bcrypt.hashSync(user.password, 10);
+    
     const dataUser = { user: { id, ...user } };
+
     const dataProfile = { id, ...profile };
 
     const data = { ...dataProfile, ...dataUser };
@@ -57,6 +63,9 @@ class ProfileService {
     const newProfile = await models.Profile.create(data, {
       include: ['user']
     });
+
+    // not response with password
+    delete newProfile.dataValues.user.dataValues.password;
 
     return newProfile;
   }

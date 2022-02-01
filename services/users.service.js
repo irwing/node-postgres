@@ -1,5 +1,6 @@
 const faker = require('faker');
 const boom = require('@hapi/boom');
+const bcrypt = require('bcrypt');
 const { models } = require('../libs/sequelize');
 
 class UserService {
@@ -41,7 +42,6 @@ class UserService {
       options.limit = req.pagination.limit;
       options.offset = req.pagination.offset;
     }
-    console.log(options);
 
     const data = await models.User.findAll(options);
 
@@ -64,7 +64,14 @@ class UserService {
       id: faker.datatype.uuid(),
       ...request
     }
+
+    // hashin password
+    data.password = await bcrypt.hashSync(data.password, 10);
+
     const newUser = await models.User.create(data);
+
+    // not response with password
+    delete newUser.dataValues.password;
 
     return newUser;
   }
