@@ -15,15 +15,33 @@ class UserService {
     return data;
   }
 
-  async find (optionsPagination) {
-    const options = {
-      include: ['profile']
+  async find (req) {
+
+    const optionsProfile = {
+      model: models.Profile,
+      as: 'profile',
+      attributes: ['firstName', 'lastName', 'photo'],
+      required: true,
+      where: {}
     };
     
-    if (optionsPagination.page && optionsPagination.limit) {
-      options.limit = optionsPagination.limit;
-      options.offset = optionsPagination.page - 1;
+    const options = {
+      attributes: ['id', 'email'],
+      include: [optionsProfile],
+      where: {}
+    };
+
+    // apply search
+    if (req.pagination.search != null) {
+      options.where.email = req.pagination.search;
     }
+    
+    // apply pagination
+    if (req.pagination.offset && req.pagination.limit) {
+      options.limit = req.pagination.limit;
+      options.offset = req.pagination.offset;
+    }
+    console.log(options);
 
     const data = await models.User.findAll(options);
 

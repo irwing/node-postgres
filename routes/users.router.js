@@ -2,24 +2,28 @@ const express = require('express');
 
 const UserService = require('./../services/users.service');
 const validatorHandler = require('./../middlewares/validator.handler');
+const { paginationSchema } = require('./../schemas/pagination.schema');
 const { getUserSchema, createUserSchema, updateUserSchema, queryUserSchema } = require('./../schemas/user.schema');
 
 const router = express.Router();
 const service = new UserService();
 
+function getDataPagination (data) {
+  const search = data.search;
+  const limit = parseInt(data.limit) || 10;
+  const offset = parseInt(data.page) - 1 || 0;
+
+  return { search, limit, offset };
+}
+
 // get all users
 router.get('/', 
-  validatorHandler(queryUserSchema, 'query'),
+  validatorHandler(paginationSchema, 'query'),
   async (req, res, next) => {
     try {
-
-      let { limit, page } = req.query;
-      let optionsPagination = {
-        limit: Number(limit) || 10,
-        page: Number(page) || 1
-      }
-
-      const users = await service.find(optionsPagination);
+      const users = await service.find({ 
+        pagination: getDataPagination(req.query)
+      });
       res.json(users);
     } catch (error) {
       next(error);
