@@ -38,6 +38,19 @@ const ProfileSchema = {
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE'
   },
+  // TODO: I must then create a role table
+  rolId: {
+    field: 'rol_id',
+    allowNull: false,
+    type: DataTypes.STRING,
+    // unique: true,
+    // references: {
+    //   model: USER_TABLE,
+    //   key: 'id'
+    // },
+    // onUpdate: 'CASCADE',
+    // onDelete: 'CASCADE'
+  },
   createdAt: {
     allowNull: false,
     type: DataTypes.DATE,

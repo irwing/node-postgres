@@ -13,10 +13,7 @@ function checkApiKey (req, res, next) {
 // TODO: change to roles
 function checkEmails(...emails) {
   return (req, res, next) => {
-    console.log(req);
     const user = req.user;
-    console.log(user.email);
-    console.log(emails);
     if (emails.includes(user.email)) {
       next();
     } else {
