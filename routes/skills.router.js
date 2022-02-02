@@ -1,4 +1,5 @@
 const express = require('express');
+const passport = require('passport');
 
 const SkillService = require('./../services/skills.service');
 const validatorHandler = require('./../middlewares/validator.handler');
@@ -62,15 +63,18 @@ router.patch('/:id',
 );
 
 // delete a skill
-router.delete('/:id', async (req, res, next) => {
-  try {
-    const { id } = req.params;
-    const result = await service.delete(id);
-    res.json(result);
-  } catch (error) {
-    next(error);
+router.delete('/:id', 
+  passport.authenticate('jwt', { session: false }),
+  async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const result = await service.delete(id);
+      res.json(result);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 
 module.exports = router;

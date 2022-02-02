@@ -1,4 +1,5 @@
 const express = require('express');
+const passport = require('passport');
 
 const ProfileCourseService = require('./../services/profiles-courses.service');
 const validatorHandler = require('../middlewares/validator.handler');
@@ -32,14 +33,17 @@ router.post('/',
 );
 
 // delete a profile course
-router.delete('/:id', async (req, res, next) => {
-  try {
-    const { id } = req.params;
-    const result = await service.delete(id);
-    res.json(result);
-  } catch (error) {
-    next(error);
+router.delete('/:id', 
+  passport.authenticate('jwt', { session: false }),
+  async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const result = await service.delete(id);
+      res.json(result);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 module.exports = router;
