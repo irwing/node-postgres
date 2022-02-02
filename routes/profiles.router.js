@@ -64,7 +64,7 @@ router.patch('/:id',
 
 // delete a profile
 router.delete('/:id', 
-  passport.authenticate('jwt', { session: false }),,
+  passport.authenticate('jwt', { session: false }),
   async (req, res, next) => {
     try {
       const { id } = req.params;
