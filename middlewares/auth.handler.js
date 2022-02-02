@@ -4,11 +4,25 @@ const { config } = require('./../config/config');
 
 function checkApiKey (req, res, next) {
   const { api } = req.headers;
-  console.log(api);
   if (!api || api != config.apiKey) {
     next(boom.unauthorized());
   }
   next();
 }
 
-module.exports = { checkApiKey };
+// TODO: change to roles
+function checkEmails(...emails) {
+  return (req, res, next) => {
+    console.log(req);
+    const user = req.user;
+    console.log(user.email);
+    console.log(emails);
+    if (emails.includes(user.email)) {
+      next();
+    } else {
+      next(boom.unauthorized());
+    }
+  }
+}
+
+module.exports = { checkApiKey, checkEmails };

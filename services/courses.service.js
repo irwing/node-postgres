@@ -48,7 +48,7 @@ class CourseService {
 
     const newCourse = await models.Course.create(data);
 
-    if (skills.length > 0) {
+    if (typeof skills != 'undefined' && skills.length > 0) {
       for (let index = 0; index < skills.length; index++) {
         const skill = skills[index];
         await models.Skill.create({

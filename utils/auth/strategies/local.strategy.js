@@ -22,7 +22,6 @@ const LocalStrategy = new Strategy({
       delete user.dataValues.password;
       done(null, user);
     } catch (error) {
-      console.log(1);
       done(error, false);
     }
   }
