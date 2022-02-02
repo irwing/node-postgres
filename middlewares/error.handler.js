@@ -10,13 +10,14 @@ function errorHandler(err, req, res, next) {
 }
 
 function secuelizeErrorHandler(err, req, res, next) {
-  if (err) {
+  if (err && typeof err.errors !== 'undefined') {
     res.status(409).json({
       'statusCode': 409,
       'error': err.errors[0].type,
       'message': err.errors[0].message
     });
   }
+  next(err);
 }
 
 function boomErrorHandler(err, req, res, next) {
