@@ -8,6 +8,7 @@ const boom = require('@hapi/boom');
 const routerApi = require('./routes');
 
 const { logErrors, errorHandler, secuelizeErrorHandler, boomErrorHandler } = require('./middlewares/error.handler');
+
 const { checkApiKey } = require('./middlewares/auth.handler');
 
 const app = express();
@@ -20,17 +21,20 @@ var accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {
 app.use(morgan('combined', { stream: accessLogStream }))
 
 // use middleware to control the ips that access
-const whitelist = ['http://localhost:3000', 'http://127.0.0.1:3000'];
+const whitelist = ['http://localhost:3000', 'http://127.0.0.1'];
 const options = {
   origin: (origin, callback) => {
-    if (whitelist.includes(origin)) {
+    if (whitelist.includes(origin) || !origin) {
       callback(null, true);
     } else {
-      callback(boom.unauthorized());
+      callback(new Error('no permitido'));
     }
   }
 }
 app.use(cors());
+
+// available authentication strategies
+require('./utils/auth');
 
 // use middleware for receive data in json
 app.use(express.json());
@@ -45,8 +49,8 @@ app.get('/',
 routerApi(app);
 
 app.use(logErrors);
-app.use(boomErrorHandler);
 app.use(secuelizeErrorHandler);
+app.use(boomErrorHandler);
 app.use(errorHandler);
 
 app.listen(port, () => {

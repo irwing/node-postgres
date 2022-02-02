@@ -58,6 +58,13 @@ class UserService {
     return data;
   }
 
+  async findByEmail(email) {
+    const rta = await models.User.findOne({
+      where: { email }
+    });
+    return rta;
+  }
+
   async create (request) {
 
     const data = {
