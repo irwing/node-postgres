@@ -4,6 +4,7 @@ const { checkRoles } = require('./../middlewares/auth.handler');
 
 const usersRouter = require('./users.router');
 const profilesRouter = require('./profiles.router');
+const profileRouter = require('./profile.router');
 const coursesRouter = require('./courses.router');
 const skillsRouter = require('./skills.router');
 const profilesCoursesRouter = require('./profiles-courses.router');
@@ -27,6 +28,12 @@ function routerApi(app) {
     passport.authenticate('jwt', {session: false}),
     profilesRouter
   );
+
+  router.use(
+    '/profile', 
+    passport.authenticate('jwt', {session: false}),
+    profileRouter
+  );
   
   router.use('/courses', coursesRouter);
 
@@ -34,7 +41,8 @@ function routerApi(app) {
 
   router.use(
     '/profiles_courses', 
-    passport.authenticate('jwt', {session: false}),
+    passport.authenticate('jwt', { session: false }),
+    checkRoles('student'),
     profilesCoursesRouter
   );
 

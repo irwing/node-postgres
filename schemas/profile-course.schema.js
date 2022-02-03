@@ -5,7 +5,6 @@ const profileId = Joi.string().uuid();
 const courseId = Joi.string().uuid();
 
 const createProfileCourseSchema = Joi.object({
-  profileId: profileId.required(),
   courseId: courseId.required()
 });
 

@@ -19,7 +19,6 @@ const LocalStrategy = new Strategy({
       if (!isMatch) {
         done(boom.unauthorized(), false);
       }
-      delete user.dataValues.id;
       delete user.dataValues.password;
       delete user.dataValues.createdAt;
       delete user.dataValues.profile.dataValues.id;

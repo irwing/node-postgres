@@ -12,10 +12,13 @@ router.post('/login',
     try {
       const user = req.user;
       const payload = {
-        sub: user.id,
+        userId: user.id,
         rolId: user.profile.rolId,
       }
       const token = jwt.sign(payload, config.jwtSecret);
+
+      delete user.dataValues.id;
+
       res.json({
         user,
         token

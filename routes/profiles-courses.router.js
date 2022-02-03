@@ -2,6 +2,7 @@ const express = require('express');
 const passport = require('passport');
 
 const ProfileCourseService = require('./../services/profiles-courses.service');
+const { checkRoles } = require('./../middlewares/auth.handler');
 const validatorHandler = require('../middlewares/validator.handler');
 const { createProfileCourseSchema } = require('./../schemas/profile-course.schema');
 
@@ -9,18 +10,19 @@ const router = express.Router();
 const service = new ProfileCourseService();
 
 // get all profile course
-router.get('/', async (req, res, next) => {
-  try {
-    const profilesCourses = await service.find();
-    res.json(profilesCourses);
-  } catch (error) {
-    next(error);
+router.get('/', 
+  async (req, res, next) => {
+    try {
+      const profilesCourses = await service.find(req.user);
+      res.json(profilesCourses);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 // create a profile course
 router.post('/',
-  passport.authenticate('jwt', { session: false }),
   validatorHandler(createProfileCourseSchema, 'body'),
   async (req, res, next) => {
     try {
@@ -35,7 +37,6 @@ router.post('/',
 
 // delete a profile course
 router.delete('/:id', 
-  passport.authenticate('jwt', { session: false }),
   async (req, res, next) => {
     try {
       const { id } = req.params;

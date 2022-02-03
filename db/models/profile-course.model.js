@@ -45,7 +45,6 @@ const ProfileCourseSchema = {
   }
 };
 
-
 class ProfileCourse extends Model {
 
   static associate(models) {

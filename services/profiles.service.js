@@ -30,17 +30,16 @@ class ProfileService {
     const data = await models.Profile.findByPk(id, {
       include: [
         { 
-          model: models.User, 
-          as: 'user',
-          attributes: ['id', 'email']
-        },
-        { 
           model: models.Course, 
           as: 'courses',
           through: {attributes: []}
         }
       ]
     });
+
+    delete data.dataValues.id;
+    delete data.dataValues.userId;
+    delete data.dataValues.rolId;
 
     return data;
   }
