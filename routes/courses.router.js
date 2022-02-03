@@ -10,14 +10,16 @@ const router = express.Router();
 const service = new CourseService();
 
 // get all course
-router.get('/', async (req, res, next) => {
-  try {
-    const courses = await service.find();
-    res.json(courses);
-  } catch (error) {
+router.get('/', 
+  async (req, res, next) => {
+    try {
+      const courses = await service.find();
+      res.json(courses);
+    } catch (error) {
     next(error);
+    }
   }
-});
+);
 
 // find a course
 router.get('/:id',
@@ -36,7 +38,7 @@ router.get('/:id',
 // create a course
 router.post('/',
   passport.authenticate('jwt', {session: false}),
-  checkRoles('student'),
+  checkRoles('admin'),
   validatorHandler(createCourseSchema, 'body'),
   async (req, res, next) => {
     try {
@@ -51,9 +53,11 @@ router.post('/',
 
 // update a course
 router.patch('/:id',
+  passport.authenticate('jwt', {session: false}),
+  checkRoles('admin'),
   validatorHandler(getCourseSchema, 'params'),
   validatorHandler(updateCourseSchema, 'body'),
-    async (req, res, next) => {
+  async (req, res, next) => {
     try {
       const { id } = req.params;
       const request = req.body;
@@ -68,6 +72,7 @@ router.patch('/:id',
 // delete a course
 router.delete('/:id', 
   passport.authenticate('jwt', { session: false }),
+  checkRoles('admin'),
   async (req, res, next) => {
     try {
       const { id } = req.params;

@@ -1,7 +1,7 @@
 const express = require('express');
-const passport = require('passport');
 
 const ProfileService = require('./../services/profiles.service');
+const { checkRoles } = require('./../middlewares/auth.handler');
 const validatorHandler = require('./../middlewares/validator.handler');
 const { getProfileSchema, createProfileSchema, updateProfileSchema } = require('./../schemas/profile.schema');
 
@@ -9,14 +9,17 @@ const router = express.Router();
 const service = new ProfileService();
 
 // get all profiles
-router.get('/', async (req, res, next) => {
-  try {
-    const profiles = await service.find();
-    res.json(profiles);
-  } catch (error) {
-    next(error);
+router.get('/', 
+  checkRoles('admin'),
+  async (req, res, next) => {
+    try {
+      const profiles = await service.find();
+      res.json(profiles);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 // find a profile
 router.get('/:id',
@@ -64,7 +67,6 @@ router.patch('/:id',
 
 // delete a profile
 router.delete('/:id', 
-  passport.authenticate('jwt', { session: false }),
   async (req, res, next) => {
     try {
       const { id } = req.params;

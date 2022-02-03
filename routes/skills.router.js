@@ -2,6 +2,7 @@ const express = require('express');
 const passport = require('passport');
 
 const SkillService = require('./../services/skills.service');
+const { checkRoles } = require('./../middlewares/auth.handler');
 const validatorHandler = require('./../middlewares/validator.handler');
 const { getSkillSchema, createSkillSchema, updateSkillSchema } = require('./../schemas/skill.schema');
 
@@ -34,6 +35,8 @@ router.get('/:id',
 
 // create a skill
 router.post('/',
+  passport.authenticate('jwt', { session: false }),
+  checkRoles('admin'),
   validatorHandler(createSkillSchema, 'body'),
   async (req, res, next) => {
     try {
@@ -48,9 +51,11 @@ router.post('/',
 
 // update a skill
 router.patch('/:id',
+  passport.authenticate('jwt', { session: false }),
+  checkRoles('admin'),
   validatorHandler(getSkillSchema, 'params'),
   validatorHandler(updateSkillSchema, 'body'),
-    async (req, res, next) => {
+  async (req, res, next) => {
     try {
       const { id } = req.params;
       const request = req.body;
@@ -65,6 +70,7 @@ router.patch('/:id',
 // delete a skill
 router.delete('/:id', 
   passport.authenticate('jwt', { session: false }),
+  checkRoles('admin'),
   async (req, res, next) => {
     try {
       const { id } = req.params;
@@ -75,6 +81,5 @@ router.delete('/:id',
     }
   }
 );
-
 
 module.exports = router;

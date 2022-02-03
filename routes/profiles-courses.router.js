@@ -20,6 +20,7 @@ router.get('/', async (req, res, next) => {
 
 // create a profile course
 router.post('/',
+  passport.authenticate('jwt', { session: false }),
   validatorHandler(createProfileCourseSchema, 'body'),
   async (req, res, next) => {
     try {

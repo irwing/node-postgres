@@ -1,5 +1,4 @@
 const express = require('express');
-const passport = require('passport');
 
 const UserService = require('./../services/users.service');
 const validatorHandler = require('./../middlewares/validator.handler');
@@ -78,7 +77,6 @@ router.patch('/:id',
 
 // delete a user
 router.delete('/:id', 
-  passport.authenticate('jwt', { session: false }),
   async (req, res, next) => {
     try {
       const { id } = req.params;

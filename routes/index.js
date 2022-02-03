@@ -1,4 +1,6 @@
 const express = require('express');
+const passport = require('passport');
+const { checkRoles } = require('./../middlewares/auth.handler');
 
 const usersRouter = require('./users.router');
 const profilesRouter = require('./profiles.router');
@@ -12,11 +14,30 @@ function routerApi(app) {
   const router = express.Router();
 
   app.use('/api/v1', router);
-  router.use('/users', usersRouter);
-  router.use('/profiles', profilesRouter);
+  
+  router.use(
+    '/users', 
+    passport.authenticate('jwt', {session: false}),
+    checkRoles('admin'),
+    usersRouter
+  );
+  
+  router.use(
+    '/profiles', 
+    passport.authenticate('jwt', {session: false}),
+    profilesRouter
+  );
+  
   router.use('/courses', coursesRouter);
+
   router.use('/skills', skillsRouter);
-  router.use('/profiles_courses', profilesCoursesRouter);
+
+  router.use(
+    '/profiles_courses', 
+    passport.authenticate('jwt', {session: false}),
+    profilesCoursesRouter
+  );
+
   router.use('/auth', authRouter);
 }
 
