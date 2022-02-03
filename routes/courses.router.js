@@ -2,7 +2,7 @@ const express = require('express');
 const passport = require('passport');
 
 const CourseService = require('./../services/courses.service');
-const { checkEmails } = require('./../middlewares/auth.handler');
+const { checkRoles } = require('./../middlewares/auth.handler');
 const validatorHandler = require('./../middlewares/validator.handler');
 const { getCourseSchema, createCourseSchema, updateCourseSchema } = require('./../schemas/course.schema');
 
@@ -36,7 +36,7 @@ router.get('/:id',
 // create a course
 router.post('/',
   passport.authenticate('jwt', {session: false}),
-  checkEmails('khalisser13@gmail.com'),
+  checkRoles('student'),
   validatorHandler(createCourseSchema, 'body'),
   async (req, res, next) => {
     try {

@@ -60,6 +60,7 @@ class UserService {
 
   async findByEmail(email) {
     const rta = await models.User.findOne({
+      include: ['profile'],
       where: { email }
     });
     return rta;

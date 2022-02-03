@@ -17,6 +17,8 @@
 //   }
 // };
 
+const bcrypt = require('bcrypt');
+
 let idAdmin = "4ac94e13-f7f2-4a6f-9cd0-d0de41161d51";
 let idTeacher = "4ac94e13-f7f2-4a6f-9cd0-d0de41161d52";
 let idStudent = "4ac94e13-f7f2-4a6f-9cd0-d0de41161d53";
@@ -25,19 +27,19 @@ const users = [
   {
     id: idAdmin,
     email: 'khalisser@gmail.com',
-    password: 'qwerty123',
+    password: bcrypt.hashSync('qwerty123', 10),
     create_at: new Date()
   },
   {
     id: idTeacher,
     email: 'naranjo@gmail.com',
-    password: 'qwerty123',
+    password: bcrypt.hashSync('qwerty123', 10),
     create_at: new Date()
   },
   {
     id: idStudent,
     email: 'irwing@gmail.com',
-    password: 'qwerty123',
+    password: bcrypt.hashSync('qwerty123', 10),
     create_at: new Date()
   }
 ];

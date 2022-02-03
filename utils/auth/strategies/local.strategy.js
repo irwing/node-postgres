@@ -19,7 +19,12 @@ const LocalStrategy = new Strategy({
       if (!isMatch) {
         done(boom.unauthorized(), false);
       }
+      delete user.dataValues.id;
       delete user.dataValues.password;
+      delete user.dataValues.createdAt;
+      delete user.dataValues.profile.dataValues.id;
+      delete user.dataValues.profile.dataValues.userId;
+      delete user.dataValues.profile.dataValues.createdAt;
       done(null, user);
     } catch (error) {
       done(error, false);

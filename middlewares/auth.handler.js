@@ -10,11 +10,10 @@ function checkApiKey (req, res, next) {
   next();
 }
 
-// TODO: change to roles
-function checkEmails(...emails) {
+function checkRoles(...roles) {
   return (req, res, next) => {
     const user = req.user;
-    if (emails.includes(user.email)) {
+    if (roles.includes(user.rolId)) {
       next();
     } else {
       next(boom.unauthorized());
@@ -22,4 +21,4 @@ function checkEmails(...emails) {
   }
 }
 
-module.exports = { checkApiKey, checkEmails };
+module.exports = { checkApiKey, checkRoles };
