@@ -6,8 +6,14 @@ class ProfileCourseService {
 
   constructor () {}
 
-  async validateIfExist (id) {
-    const data = await models.ProfileCourse.findByPk(id);
+  async validateIfExist (superKey) {
+
+    console.log(superKey);
+
+    const data = await models.ProfileCourse.findOne({
+      where: superKey
+    });
+  
     if (data === null) {
       throw boom.notFound('Profile Course not found');
     }
@@ -23,13 +29,8 @@ class ProfileCourseService {
     return data;
   }
 
-  async findOne (id) {
-    await this.validateIfExist(id);
-
-    const data = await models.ProfileCourse.findByPk(id, {
-      include: ['courses']
-    });
-
+  async findOne (superKey) {
+    const data = await this.validateIfExist(superKey);
     return data;
   }
 
@@ -42,12 +43,10 @@ class ProfileCourseService {
     return newProfileCourse;
   }
 
-  async delete (id) {
-
-    let userProfileCourse = await this.findOne(id);
-    await userProfileCourse.destroy();
-
-    return { id };
+  async delete (superKey) {
+    const data = await this.validateIfExist(superKey);
+    await data.destroy();
+    return { courseId: superKey.courseId };
   }
 }
 

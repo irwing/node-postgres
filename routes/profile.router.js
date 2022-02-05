@@ -25,6 +25,7 @@ router.get('/',
   }
 );
 
+// add course to profile
 router.post('/courses',
   validatorSchema(createProfileCourseSchema),
   async (req, res, next) => {
@@ -49,7 +50,24 @@ router.post('/courses',
       }
 
       await serviceProfileCourse.create(data);
-      res.json({ message: 'Course added to profile' });
+      res.json({ courseId: data.courseId });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+// delete course from profile
+router.delete('/courses/:id',
+  async (req, res, next) => {
+    try {
+      const superKey = {
+        profileId: req.user.userId,
+        courseId: req.params.id
+      };
+
+      const result = await serviceProfileCourse.delete(superKey);
+      res.json(result);
     } catch (error) {
       next(error);
     }
