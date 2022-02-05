@@ -1,9 +1,11 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const cors = require('cors');
 const morgan = require('morgan');
 const fs = require('fs');
 const path = require('path');
 const boom = require('@hapi/boom');
+const swaggerUi = require('swagger-ui-express');
 
 const routerApi = require('./routes');
 
@@ -12,6 +14,8 @@ const { logErrors, errorHandler, secuelizeErrorHandler, boomErrorHandler } = req
 const { checkApiKey } = require('./middlewares/auth.handler');
 
 const app = express();
+app.use(bodyParser.json());
+
 const port = 3000;
 
 // create a write stream (in append mode)
@@ -38,13 +42,17 @@ require('./utils/auth');
 
 // use middleware for receive data in json
 app.use(express.json());
+// app.get('/', 
+//   checkApiKey,
+//   (req, res) => {
+//     res.send('Hi!')
+//   }
+// );
 
-app.get('/', 
-  checkApiKey,
-  (req, res) => {
-    res.send('Hi!')
-  }
-);
+
+// documentation swagger
+const swaggerDocument = require('./swagger.json');
+app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 routerApi(app);
 
