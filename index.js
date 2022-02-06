@@ -25,17 +25,17 @@ var accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {
 app.use(morgan('combined', { stream: accessLogStream }))
 
 // use middleware to control the ips that access
-const whitelist = ['http://localhost:3000', 'http://127.0.0.1'];
+const whitelist = ['http://localhost:3000', 'http://127.0.0.1:3000'];
 const optionsCors = {
   origin: (origin, callback) => {
     if (whitelist.includes(origin) || !origin) {
       callback(null, true);
     } else {
-      callback(new Error('no permitido'));
+      callback(boom.unauthorized());
     }
   }
 }
-app.use(cors(optionsCors));
+app.use(cors());
 
 // available authentication strategies
 require('./utils/auth');
