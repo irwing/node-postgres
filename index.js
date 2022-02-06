@@ -10,12 +10,12 @@ const swaggerUi = require('swagger-ui-express');
 const routerApi = require('./routes');
 
 const { logErrors, errorHandler, secuelizeErrorHandler, boomErrorHandler } = require('./middlewares/error.handler');
-
 const { checkApiKey } = require('./middlewares/auth.handler');
 
 const app = express();
 app.use(bodyParser.json());
 
+const pathViews = path.join(__dirname, 'views');
 const port = 3000;
 
 // create a write stream (in append mode)
@@ -26,7 +26,7 @@ app.use(morgan('combined', { stream: accessLogStream }))
 
 // use middleware to control the ips that access
 const whitelist = ['http://localhost:3000', 'http://127.0.0.1'];
-const options = {
+const optionsCors = {
   origin: (origin, callback) => {
     if (whitelist.includes(origin) || !origin) {
       callback(null, true);
@@ -35,24 +35,22 @@ const options = {
     }
   }
 }
-app.use(cors());
+app.use(cors(optionsCors));
 
 // available authentication strategies
 require('./utils/auth');
 
 // use middleware for receive data in json
 app.use(express.json());
-// app.get('/', 
-//   checkApiKey,
-//   (req, res) => {
-//     res.send('Hi!')
-//   }
-// );
-
+app.get('/',
+  (req, res) => {
+    res.sendFile(path.join(pathViews, 'index.html'));
+  }
+);
 
 // documentation swagger
 const swaggerDocument = require('./swagger.json');
-app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 routerApi(app);
 
