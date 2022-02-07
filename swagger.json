@@ -265,6 +265,226 @@
           }
         }
       }
+    },
+    "/courses/{courseId}": {
+      "get": {
+        "tags": [
+          "Courses"
+        ],
+        "summary": "Find a course",
+        "description": "Find a course",
+        "operationId": "findCourse",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Course id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "skills": {
+                  "type": "object",
+                  "items": []
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "error": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Courses"
+        ],
+        "summary": "Update course",
+        "description": "Update course",
+        "operationId": "updateCourse",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description":"Course id",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Course data",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+              ],
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "skills": {
+                  "type": "object",
+                  "items": []
+                }
+              }
+            }
+          },
+          "400": {
+            "statusCode": 400,
+            "error": "Bad Request",
+            "message": "error message"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "error": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Courses"
+        ],
+        "summary": "Delete a course",
+        "description": "Delete a course",
+        "operationId": "deleteCourse",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Course id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "error": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
     }
   }
 }
